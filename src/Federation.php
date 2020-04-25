@@ -119,6 +119,6 @@ EOF;
             }
         ];
 
-        return array_merge($rootValue, $extendedRootValue);
+        return array_merge($extendedRootValue, $rootValue);
     }
 }
