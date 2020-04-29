@@ -108,8 +108,13 @@ EOF;
                             );
                         }
 
-                        $resolver = $type->resolveFieldFn ?: function () use ($representation) {
-                            return $representation;
+                        $resolver = $type->resolveFieldFn ?: function () use ($representation, $info) {
+                            $method = 'resolve' . ucfirst($representation['__typename']);
+                            if (isset($info->rootValue[$method])) {
+                                return array_merge($representation, $info->rootValue[$method]());
+                            } else {
+                                return $representation;
+                            }
                         };
 
                         return $resolver();
