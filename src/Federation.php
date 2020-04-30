@@ -96,7 +96,7 @@ EOF;
                 $representations = $args['representations'];
 
                 return array_map(
-                    function ($representation) use ($info) {
+                    function ($representation) use ($rootValue, $args, $context, $info) {
                         $typeName = $representation['__typename'];
 
                         /** @var ObjectType $type */
@@ -108,10 +108,15 @@ EOF;
                             );
                         }
 
-                        $resolver = $type->resolveFieldFn ?: function () use ($representation, $info) {
+                        $resolver = $type->resolveFieldFn ?: function () use ($representation, $rootValue, $args, $context, $info) {
                             $method = 'resolve' . ucfirst($representation['__typename']);
                             if (isset($info->rootValue[$method])) {
-                                return array_merge($representation, $info->rootValue[$method]());
+                                return array_merge(
+                                    $representation,
+                                    $info->rootValue[$method]($rootValue, $representation, $context, $info)
+                                    //$info->rootValue[$method]($rootValue, $args, $context, $info)
+                                );
+
                             } else {
                                 return $representation;
                             }
