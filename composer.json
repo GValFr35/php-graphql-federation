@@ -22,7 +22,8 @@
     },
     "require": {
         "php": "^7.3",
-        "webonyx/graphql-php": "^0.13.8"
+        "webonyx/graphql-php": "^14.3",
+        "ext-json": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.4"
